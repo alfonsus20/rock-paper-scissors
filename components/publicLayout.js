@@ -12,7 +12,7 @@ const PublicLayout = ({ children }) => {
     }
   }, [globalName]);
 
-  return <div>{children}</div>;
+  return children;
 };
 
 export default PublicLayout;

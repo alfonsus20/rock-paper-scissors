@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import PrivateLayout from "../components/privateLayout";
-import UserCard from "../components/userCard";
+import UserCard from "../components/UserCard";
 import { useUserContext } from "../context/userContext";
 
 const Play = () => {
   const { globalName, logout } = useUserContext();
   const [userLives, setUserLives] = useState(3);
   const [botLives, setBotLives] = useState(10);
-  const [botChoice, setBotChoice] = useState("");
-  const [userChoice, setUserChoice] = useState("");
+  const [botChoice, setBotChoice] = useState({});
+  const [userChoice, setUserChoice] = useState({});
   const [result, setResult] = useState("");
 
-  const choices = ["ROCK", "PAPER", "SCISSORS"];
+  const choices = [
+    { type: "ROCK", imageURL: "/rock.png" },
+    { type: "PAPER", imageURL: "/paper.png" },
+    { type: "SCISSORS", imageURL: "/scissors.png" },
+  ];
 
   const changeBotChoice = () => {
     setInterval(() => {
@@ -51,23 +55,23 @@ const Play = () => {
     }
   };
 
-  const handleChoice = (type) => {
-    setUserChoice(type);
-    if (type !== botChoice) {
-      if (type === "SCISSORS") {
-        if (botChoice === "ROCK") {
+  const handleChoice = (choice) => {
+    setUserChoice(choice);
+    if (choice.type !== botChoice.type) {
+      if (choice.type === "SCISSORS") {
+        if (botChoice.type === "ROCK") {
           decreaseUserLives();
         } else {
           increaseUserLives();
         }
-      } else if (type === "ROCK") {
-        if (botChoice === "PAPER") {
+      } else if (choice.type === "ROCK") {
+        if (botChoice.type === "PAPER") {
           decreaseUserLives();
         } else {
           increaseUserLives();
         }
       } else {
-        if (botChoice === "SCISSORS") {
+        if (botChoice.type === "SCISSORS") {
           decreaseUserLives();
         } else {
           increaseUserLives();
@@ -75,7 +79,7 @@ const Play = () => {
       }
     }
     setTimeout(() => {
-      setUserChoice("");
+      setUserChoice({});
     }, 1000);
   };
 
@@ -99,16 +103,16 @@ const Play = () => {
           <div>Nyawa User : {userLives}</div>
           <div>Nyawa Bot : {botLives}</div>
 
-          <div>User Choice : {userChoice}</div>
-          <div>Bot Choice : {botChoice}</div>
+          <div>User Choice : {userChoice.type}</div>
+          <div>Bot Choice : {botChoice.type}</div>
 
           <div>
             {choices.map((choice, idx) => (
               <UserCard
                 key={idx}
-                type={choice}
+                choice={choice}
                 onChoose={handleChoice}
-                disabled={!!userChoice}
+                disabled={!!userChoice.type}
               />
             ))}
           </div>
