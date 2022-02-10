@@ -1,5 +1,5 @@
 # Simple Rock Paper Scissors Game
-Built with Next JS and SASS0
+Built with Next JS and SASS
 
 ## Installation
 In order to install this repo, just clone it first, then on your terminal, type
