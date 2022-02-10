@@ -37,10 +37,10 @@ const Play = () => {
 
   const showResult = () => {
     if (userLives === 0) {
-      setResult("You Lose");
+      setResult("LOST");
     }
     if (botLives === 0) {
-      setResult("You Won");
+      setResult("WON");
     }
   };
 
@@ -97,9 +97,22 @@ const Play = () => {
       <div className="container">
         {result ? (
           <div className={styles["result-container"]}>
-            <p>{result}</p>
-            <button onClick={restartGame}>Restart</button>
-            <button onClick={logout}>Quit Game</button>
+            <h1>
+              You{" "}
+              <span
+                className={result === "WON" ? styles["won"] : styles["lost"]}
+              >
+                {result}
+              </span>
+            </h1>
+            <div className={styles["btn-container"]}>
+              <button className={styles["btn-restart"]} onClick={restartGame}>
+                Restart
+              </button>
+              <button className={styles["btn-quit"]} onClick={logout}>
+                Quit Game
+              </button>
+            </div>
           </div>
         ) : (
           <div className={styles["game-container"]}>
