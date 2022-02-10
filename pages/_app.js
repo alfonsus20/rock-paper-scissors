@@ -1,18 +1,13 @@
 import { UserWrapper } from "../context/userContext";
 import "../styles/globals.scss";
-import { AnimatePresence } from "framer-motion";
-import { useEffect } from "react";
+// import { AnimatePresence } from "framer-motion";
 
 function MyApp({ Component, pageProps, router }) {
-  useEffect(() => {
-    router.push(router.asPath);
-  }, []);
-
   return (
     <UserWrapper>
-      <AnimatePresence exitBeforeEnter initial={false}>
+      {/* <AnimatePresence exitBeforeEnter initial={false}> */}
         <Component {...pageProps} key={router.route} />
-      </AnimatePresence>
+      {/* </AnimatePresence> */}
     </UserWrapper>
   );
 }
