@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useUserContext } from "../context/userContext";
-import Layout from "../components/Layout";
+import Layout from "./Layout";
 
 const PublicLayout = ({ children }) => {
   const { globalName } = useUserContext();

@@ -1,14 +1,12 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { useState } from "react";
-import PublicLayout from "../components/publicLayout";
+import PublicLayout from "../components/PublicLayout";
 import { useUserContext } from "../context/userContext";
 import styles from "../styles/Home.module.scss";
 
 const Home = () => {
   const { login } = useUserContext();
   const [name, setName] = useState("");
-  const router = useRouter();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,7 +34,7 @@ const Home = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            <button type="submit">Mulai</button>
+            <button type="submit">START</button>
           </form>
         </div>
       </div>

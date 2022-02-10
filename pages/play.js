@@ -1,7 +1,8 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import Head from "next/head";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import PrivateLayout from "../components/privateLayout";
+import PrivateLayout from "../components/PrivateLayout";
 import UserCard from "../components/UserCard";
 import { useUserContext } from "../context/userContext";
 import styles from "../styles/Play.module.scss";
@@ -20,6 +21,7 @@ const Play = () => {
 
   const [botChoice, setBotChoice] = useState(choices[0]);
   const [userChoice, setUserChoice] = useState({});
+  const [userLastChoice, setUserLastChoice] = useState({});
 
   const changeBotChoice = () => {
     setInterval(() => {
@@ -61,6 +63,7 @@ const Play = () => {
 
   const handleChoice = (choice) => {
     setUserChoice(choice);
+    setUserLastChoice(choice);
     if (choice.type !== botChoice.type) {
       if (choice.type === "SCISSORS") {
         if (botChoice.type === "ROCK") {
@@ -84,98 +87,116 @@ const Play = () => {
     }
     setTimeout(() => {
       setUserChoice({});
-    }, 1000);
+    }, 500);
   };
 
   const restartGame = () => {
     setBotLives(10);
     setUserLives(3);
+    setUserChoice({});
+    setUserLastChoice({});
     setResult("");
   };
 
   const variants = {
+    hidden: { opacity: 0, y: -200 },
+    enter: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: 200 },
+  };
 
+  const transition = {
+    stiffness: 0,
   };
 
   return (
     <PrivateLayout>
-      <div className="container">
-        {result ? (
-          <motion.div
-            variants={variants}
-            initial="hidden"
-            animate="enter"
-            exit="exit"
-            className={styles["result-container"]}
-          >
-            <h1>
-              You{" "}
-              <span
-                className={result === "WON" ? styles["won"] : styles["lost"]}
-              >
-                {result}
-              </span>
-            </h1>
-            <div className={styles["btn-container"]}>
-              <button className={styles["btn-restart"]} onClick={restartGame}>
-                Restart
-              </button>
-              <button className={styles["btn-quit"]} onClick={logout}>
-                Quit Game
-              </button>
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            variants={variants}
-            initial="hidden"
-            animate="enter"
-            exit="exit"
-            className={styles["game-container"]}
-          >
-            <h1>
-              Welcome, <span>{globalName}</span> !
-            </h1>
-            <div className={styles["score-container"]}>
-              <div className={`${styles["score-item"]} ${styles["choice"]}`}>
-                <Image
-                  src={botChoice.imageURL}
-                  alt={botChoice.type}
-                  width={150}
-                  height={150}
-                />
-                <h2>BOT</h2>
+      <Head>
+        <title>{result ? 'Game Over' : 'Play Game'}</title>
+      </Head>
+      <AnimatePresence exitBeforeEnter initial={false}>
+        <div className="container">
+          {result ? (
+            <motion.div
+              variants={variants}
+              initial="hidden"
+              animate="enter"
+              exit="exit"
+              key="result"
+              transition={transition}
+              className={styles["result-container"]}
+            >
+              <h1>
+                You{" "}
+                <span
+                  className={result === "WON" ? styles["won"] : styles["lost"]}
+                >
+                  {result}
+                </span>
+              </h1>
+              <div className={styles["btn-container"]}>
+                <button className={styles["btn-restart"]} onClick={restartGame}>
+                  Restart
+                </button>
+                <button className={styles["btn-quit"]} onClick={logout}>
+                  Quit Game
+                </button>
               </div>
-              <div className={`${styles["score-item"]} ${styles["lives"]}`}>
-                <div className={styles["lives__bot"]}>{botLives}</div>
-                <div className={styles["lives__vs"]}>VS</div>
-                <div className={styles["lives__user"]}>{userLives}</div>
-              </div>
-              <div className={`${styles["score-item"]} ${styles["choice"]}`}>
-                {userChoice.imageURL && (
+            </motion.div>
+          ) : (
+            <motion.div
+              variants={variants}
+              initial="hidden"
+              animate="enter"
+              exit="exit"
+              key="game"
+              transition={transition}
+              className={styles["game-container"]}
+            >
+              <h1>
+                Welcome, <span>{globalName}</span> !
+              </h1>
+              <div className={styles["score-container"]}>
+                <div className={`${styles["score-item"]} ${styles["choice"]}`}>
                   <Image
-                    src={userChoice.imageURL}
-                    alt={userChoice.type}
+                    src={botChoice.imageURL}
+                    alt={botChoice.type}
                     width={150}
                     height={150}
                   />
-                )}
-                <h2>YOU</h2>
+                  <h2>BOT</h2>
+                </div>
+                <div className={`${styles["score-item"]} ${styles["lives"]}`}>
+                  <div className={styles["lives__bot"]}>{botLives}</div>
+                  <div className={styles["lives__vs"]}>VS</div>
+                  <div className={styles["lives__user"]}>{userLives}</div>
+                </div>
+                <div className={`${styles["score-item"]} ${styles["choice"]}`}>
+                  {userChoice.imageURL && (
+                    <Image
+                      src={userChoice.imageURL}
+                      alt={userChoice.type}
+                      width={150}
+                      height={150}
+                    />
+                  )}
+                  <h2>YOU</h2>
+                </div>
               </div>
-            </div>
-            <div className={styles["card-container"]}>
-              {choices.map((choice, idx) => (
-                <UserCard
-                  key={idx}
-                  choice={choice}
-                  onChoose={handleChoice}
-                  disabled={!!userChoice.type}
-                />
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </div>
+              <div className={styles["card-container"]}>
+                {choices.map((choice, idx) => (
+                  <UserCard
+                    key={idx}
+                    currentUserChoice={userLastChoice}
+                    choice={choice}
+                    onChoose={handleChoice}
+                    disabled={!!userChoice.type}
+                  />
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </div>
+      </AnimatePresence>
     </PrivateLayout>
   );
 };
