@@ -17,11 +17,9 @@ const Home = () => {
 
   return (
     <PublicLayout>
-      <div className={styles.container}>
+      <div className="container">
         <Head>
           <title>Rock Paper Scissors</title>
-          <meta name="description" content="Simple Rock Paper Scissors Game" />
-          <link rel="icon" href="/rock-paper-scissors.png" />
         </Head>
         <div className={styles["form-wrapper"]}>
           <h1>

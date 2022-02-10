@@ -1,14 +1,14 @@
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import PrivateLayout from "../components/privateLayout";
 import UserCard from "../components/UserCard";
 import { useUserContext } from "../context/userContext";
+import styles from "../styles/Play.module.scss";
 
 const Play = () => {
   const { globalName, logout } = useUserContext();
   const [userLives, setUserLives] = useState(3);
   const [botLives, setBotLives] = useState(10);
-  const [botChoice, setBotChoice] = useState({});
-  const [userChoice, setUserChoice] = useState({});
   const [result, setResult] = useState("");
 
   const choices = [
@@ -16,6 +16,9 @@ const Play = () => {
     { type: "PAPER", imageURL: "/paper.png" },
     { type: "SCISSORS", imageURL: "/scissors.png" },
   ];
+
+  const [botChoice, setBotChoice] = useState(choices[0]);
+  const [userChoice, setUserChoice] = useState({});
 
   const changeBotChoice = () => {
     setInterval(() => {
@@ -91,33 +94,58 @@ const Play = () => {
 
   return (
     <PrivateLayout>
-      {result ? (
-        <div>
-          <p>{result}</p>
-          <button onClick={restartGame}>Restart</button>
-          <button onClick={logout}>Quit Game</button>
-        </div>
-      ) : (
-        <div>
-          <h1>Welcome, {globalName} !</h1>
-          <div>Nyawa User : {userLives}</div>
-          <div>Nyawa Bot : {botLives}</div>
-
-          <div>User Choice : {userChoice.type}</div>
-          <div>Bot Choice : {botChoice.type}</div>
-
-          <div>
-            {choices.map((choice, idx) => (
-              <UserCard
-                key={idx}
-                choice={choice}
-                onChoose={handleChoice}
-                disabled={!!userChoice.type}
-              />
-            ))}
+      <div className="container">
+        {result ? (
+          <div className={styles["result-container"]}>
+            <p>{result}</p>
+            <button onClick={restartGame}>Restart</button>
+            <button onClick={logout}>Quit Game</button>
           </div>
-        </div>
-      )}
+        ) : (
+          <div className={styles["game-container"]}>
+            <h1>
+              Welcome, <span>{globalName}</span> !
+            </h1>
+            <div className={styles["score-container"]}>
+              <div className={`${styles["score-item"]} ${styles["choice"]}`}>
+                <Image
+                  src={botChoice.imageURL}
+                  alt={botChoice.type}
+                  width={150}
+                  height={150}
+                />
+                <h2>BOT</h2>
+              </div>
+              <div className={`${styles["score-item"]} ${styles["lives"]}`}>
+                <div className={styles["lives__bot"]}>{botLives}</div>
+                <div className={styles["lives__vs"]}>VS</div>
+                <div className={styles["lives__user"]}>{userLives}</div>
+              </div>
+              <div className={`${styles["score-item"]} ${styles["choice"]}`}>
+                {userChoice.imageURL && (
+                  <Image
+                    src={userChoice.imageURL}
+                    alt={userChoice.type}
+                    width={150}
+                    height={150}
+                  />
+                )}
+                <h2>YOU</h2>
+              </div>
+            </div>
+            <div className={styles["card-container"]}>
+              {choices.map((choice, idx) => (
+                <UserCard
+                  key={idx}
+                  choice={choice}
+                  onChoose={handleChoice}
+                  disabled={!!userChoice.type}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </PrivateLayout>
   );
 };

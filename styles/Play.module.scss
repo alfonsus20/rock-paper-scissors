@@ -1,0 +1,74 @@
+.game-container {
+  width: 100%;
+  max-width: 1200px;
+  text-align: center;
+
+  h1 {
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 2rem;
+
+    span {
+      color: #5df19f;
+    }
+  }
+
+  .score-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    .score-item {
+      flex-basis: 33.33%;
+    }
+
+    .choice {
+      align-self: flex-end;
+
+      h2 {
+        color: white;
+      }
+    }
+
+    .lives {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      color: white;
+
+      & > * {
+        flex-basis: 33.33%;
+        height: fit-content;
+        padding: 0.5rem 1rem;
+      }
+
+      &__bot,
+      &__user {
+        background-color:#f2ac3d;
+        font-size: 1.5rem;
+      }
+
+      &__bot {
+        border-radius: 8px 0 0 8px;
+      }
+
+      &__user {
+        border-radius: 0 8px 8px 0;
+      }
+
+      &__vs{
+        font-size: 3rem;
+        background-color: #cf389b;
+        border-radius: 8px;
+      }
+    }
+  }
+
+  .card-container {
+    display: flex;
+    justify-content: center;
+    column-gap: 2rem;
+  }
+}
