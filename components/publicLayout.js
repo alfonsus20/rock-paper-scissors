@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useUserContext } from "../context/userContext";
+import Layout from "../components/Layout";
 
 const PublicLayout = ({ children }) => {
   const { globalName } = useUserContext();
@@ -12,7 +13,7 @@ const PublicLayout = ({ children }) => {
     }
   }, [globalName]);
 
-  return children;
+  return <Layout>{children}</Layout>;
 };
 
 export default PublicLayout;

@@ -13,11 +13,7 @@ a {
   box-sizing: border-box;
 }
 
-.container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+body{
   background: #8e2de2; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     to right,
@@ -43,6 +39,13 @@ a {
       background-position: left;
     }
   }
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   button {
     border: none;

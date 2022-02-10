@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useUserContext } from "../context/userContext";
+import Layout from "../components/Layout";
 
 const PrivateLayout = ({ children }) => {
   const { globalName } = useUserContext();
@@ -12,7 +13,7 @@ const PrivateLayout = ({ children }) => {
     }
   }, [globalName]);
 
-  return <div>{children}</div>;
+  return <Layout>{children}</Layout>;
 };
 
 export default PrivateLayout;
