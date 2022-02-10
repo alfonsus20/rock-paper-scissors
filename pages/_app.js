@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 function MyApp({ Component, pageProps, router }) {
   useEffect(() => {
-    router.push(router.pathname);
+    router.push(router.asPath);
   }, []);
 
   return (
