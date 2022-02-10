@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import PrivateLayout from "../components/privateLayout";
@@ -92,11 +93,21 @@ const Play = () => {
     setResult("");
   };
 
+  const variants = {
+
+  };
+
   return (
     <PrivateLayout>
       <div className="container">
         {result ? (
-          <div className={styles["result-container"]}>
+          <motion.div
+            variants={variants}
+            initial="hidden"
+            animate="enter"
+            exit="exit"
+            className={styles["result-container"]}
+          >
             <h1>
               You{" "}
               <span
@@ -113,9 +124,15 @@ const Play = () => {
                 Quit Game
               </button>
             </div>
-          </div>
+          </motion.div>
         ) : (
-          <div className={styles["game-container"]}>
+          <motion.div
+            variants={variants}
+            initial="hidden"
+            animate="enter"
+            exit="exit"
+            className={styles["game-container"]}
+          >
             <h1>
               Welcome, <span>{globalName}</span> !
             </h1>
@@ -156,7 +173,7 @@ const Play = () => {
                 />
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
     </PrivateLayout>
