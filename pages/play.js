@@ -22,13 +22,25 @@ const Play = () => {
   const [botChoice, setBotChoice] = useState(choices[0]);
   const [userChoice, setUserChoice] = useState({});
   const [userLastChoice, setUserLastChoice] = useState({});
+  const [botInterval, setBotInterval] = useState(null);
 
   const changeBotChoice = () => {
-    setInterval(() => {
-      const random = Math.floor(Math.random() * 3);
-      setBotChoice(choices[random]);
-    }, 2000);
+    setBotInterval(
+      setInterval(() => {
+        const random = Math.floor(Math.random() * 3);
+        setBotChoice(choices[random]);
+        console.log("first");
+      }, 1000)
+    );
   };
+
+  useEffect(() => {
+    if (botInterval) {
+      return () => {
+        clearInterval(botInterval);
+      };
+    }
+  }, [botInterval]);
 
   useEffect(() => {
     changeBotChoice();
@@ -111,7 +123,7 @@ const Play = () => {
   return (
     <PrivateLayout>
       <Head>
-        <title>{result ? 'Game Over' : 'Play Game'}</title>
+        <title>{result ? "Game Over" : "Play Game"}</title>
       </Head>
       <AnimatePresence exitBeforeEnter initial={false}>
         <div className="container">
