@@ -24,15 +24,11 @@ const Play = () => {
   const [botInterval, setBotInterval] = useState(null);
 
   const changeBotChoice = () => {
-    setBotChoice(getChoice());
-  };
-
-  const getChoice = () => {
     let otherChoices = choices.filter(
       (choice) => choice.type !== botChoice.type
     );
     let randomChoice = otherChoices[Math.floor(Math.random() * 2)];
-    return randomChoice;
+    setBotChoice(randomChoice);
   };
 
   useEffect(() => {
@@ -50,8 +46,8 @@ const Play = () => {
   useEffect(() => {
     setBotInterval(
       setInterval(() => {
-        setBotChoice(getChoice());
-      }, 5000)
+        changeBotChoice();
+      }, 2000)
     );
   }, [botChoice]);
 
