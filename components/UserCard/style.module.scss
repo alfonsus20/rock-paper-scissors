@@ -1,0 +1,33 @@
+.card {
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  .selected {
+    position: absolute;
+    border-radius: 50%;
+    border: 10px solid white;
+    width: 130px;
+    height: 130px;
+  }
+
+  .img-disabled {
+    z-index: -10;
+  }
+}
+
+div {
+  .disabled {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 50%;
+    z-index: 10;
+    background-color: rgba($color: #eee, $alpha: 0.5);
+    pointer-events: none;
+  }
+}

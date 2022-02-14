@@ -21,17 +21,18 @@ const Play = () => {
 
   const [botChoice, setBotChoice] = useState(choices[0]);
   const [userChoice, setUserChoice] = useState({});
-  const [userLastChoice, setUserLastChoice] = useState({});
   const [botInterval, setBotInterval] = useState(null);
 
   const changeBotChoice = () => {
-    setBotInterval(
-      setInterval(() => {
-        const random = Math.floor(Math.random() * 3);
-        setBotChoice(choices[random]);
-        console.log("first");
-      }, 1000)
+    setBotChoice(getChoice());
+  };
+
+  const getChoice = () => {
+    let otherChoices = choices.filter(
+      (choice) => choice.type !== botChoice.type
     );
+    let randomChoice = otherChoices[Math.floor(Math.random() * 2)];
+    return randomChoice;
   };
 
   useEffect(() => {
@@ -45,6 +46,14 @@ const Play = () => {
   useEffect(() => {
     changeBotChoice();
   }, []);
+
+  useEffect(() => {
+    setBotInterval(
+      setInterval(() => {
+        setBotChoice(getChoice());
+      }, 5000)
+    );
+  }, [botChoice]);
 
   useEffect(() => {
     showResult();
@@ -75,7 +84,8 @@ const Play = () => {
 
   const handleChoice = (choice) => {
     setUserChoice(choice);
-    setUserLastChoice(choice);
+    clearInterval(botInterval);
+
     if (choice.type !== botChoice.type) {
       if (choice.type === "SCISSORS") {
         if (botChoice.type === "ROCK") {
@@ -99,14 +109,14 @@ const Play = () => {
     }
     setTimeout(() => {
       setUserChoice({});
-    }, 500);
+      changeBotChoice();
+    }, 2000);
   };
 
   const restartGame = () => {
     setBotLives(10);
     setUserLives(3);
     setUserChoice({});
-    setUserLastChoice({});
     setResult("");
   };
 
@@ -198,7 +208,7 @@ const Play = () => {
                 {choices.map((choice, idx) => (
                   <UserCard
                     key={idx}
-                    currentUserChoice={userLastChoice}
+                    currentUserChoice={userChoice}
                     choice={choice}
                     onChoose={handleChoice}
                     disabled={!!userChoice.type}
